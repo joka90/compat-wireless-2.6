@@ -1,3 +1,8 @@
+KLIB ?= /home/johan/android/kernel/htc-kernel-msm7227-exp
+KLIB_BUILD := $(KLIB)
+#KERNEL_SUBLEVEL:=$(head -3 ../../../../kernel/Makefile | grep SUBLEVEL | cut -c 13)
+CROSS_COMPILE=/media/78f66aff-a20a-4690-b324-bf185d2636e5/android/system/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi-
+
 export KMODDIR?=       updates
 KMODDIR_ARG:=   "INSTALL_MOD_DIR=$(KMODDIR)"
 ifneq ($(origin KLIB), undefined)
@@ -27,14 +32,11 @@ ifeq ($(BT),)
 obj-$(CONFIG_COMPAT_WIRELESS) += net/wireless/ net/mac80211/
 obj-$(CONFIG_COMPAT_WIRELESS_MODULES) += drivers/net/wireless/
 
-obj-$(CONFIG_COMPAT_NET_USB_MODULES) += drivers/net/usb/
 
 obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/
 obj-$(CONFIG_COMPAT_VAR_MODULES) +=  drivers/ssb/ drivers/misc/eeprom/
 
 ifeq ($(CONFIG_STAGING_EXCLUDE_BUILD),)
-obj-$(CONFIG_COMPAT_STAGING) += drivers/staging/ath6kl/
-obj-$(CONFIG_COMPAT_STAGING) += drivers/staging/brcm80211/
 endif
 
 endif
@@ -162,7 +164,6 @@ install: uninstall install-modules install-scripts
 install-modules: modules
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) $(KMODDIR_ARG) $(KMODPATH_ARG) \
 		modules_install
-	@./scripts/update-initramfs
 
 install-scripts:
 	@# All the scripts we can use

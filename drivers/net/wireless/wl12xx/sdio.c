@@ -37,12 +37,18 @@
 #include "wl12xx_80211.h"
 #include "io.h"
 
+/* From board-legend-mmc.c
+
+		.vendor		= 0x104c,
+		.device		= 0x9066,
+*/
+
 #ifndef SDIO_VENDOR_ID_TI
-#define SDIO_VENDOR_ID_TI		0x0097
+#define SDIO_VENDOR_ID_TI		0x104c
 #endif
 
 #ifndef SDIO_DEVICE_ID_TI_WL1271
-#define SDIO_DEVICE_ID_TI_WL1271	0x4076
+#define SDIO_DEVICE_ID_TI_WL1271	0x9066
 #endif
 
 static const struct sdio_device_id wl1271_devices[] = {

@@ -24,6 +24,13 @@
 #ifndef _LINUX_WL12XX_H
 #define _LINUX_WL12XX_H
 
+#define WMPA_NUMBER_OF_SECTIONS	3
+#define WMPA_NUMBER_OF_BUFFERS	160
+#define WMPA_SECTION_HEADER	24
+#define WMPA_SECTION_SIZE_0	(WMPA_NUMBER_OF_BUFFERS * 64)
+#define WMPA_SECTION_SIZE_1	(WMPA_NUMBER_OF_BUFFERS * 256)
+#define WMPA_SECTION_SIZE_2	(WMPA_NUMBER_OF_BUFFERS * 2048)
+
 /* The board reference clock values */
 enum {
 	WL12XX_REFCLOCK_19 = 0,	/* 19.2 MHz */
@@ -33,7 +40,9 @@ enum {
 };
 
 struct wl12xx_platform_data {
-	void (*set_power)(bool enable);
+	int (*set_power)(int val);
+	int (*set_reset)(int val);
+	int (*set_carddetect)(int val);
 	/* SDIO only: IRQ number if WLAN_IRQ line is used, 0 for SDIO IRQs */
 	int irq;
 	bool use_eeprom;
