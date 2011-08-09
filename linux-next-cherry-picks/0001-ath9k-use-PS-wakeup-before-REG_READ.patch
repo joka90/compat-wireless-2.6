@@ -1,0 +1,35 @@
+We add this as its a fix but not critical fix but we should
+want this propagated to end users as its a good idea / fix for
+those using the debugfs read file.
+
+From c6e38c06cb51bee42ff80a36a0f7c67b485c4541 Mon Sep 17 00:00:00 2001
+From: Mohammed Shafi Shajakhan <mshajakhan@atheros.com>
+Date: Wed, 18 May 2011 17:56:00 +0530
+Subject: [PATCH] ath9k: use PS wakeup before REG_READ
+
+otherwise we will get deadbeef when the station is in idle state
+
+Signed-off-by: Mohammed Shafi Shajakhan <mshajakhan@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/debug.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -430,6 +430,7 @@
+ 			conf->channel_type,
+ 			channel_type_str(conf->channel_type));
+ 
++	ath9k_ps_wakeup(sc);
+ 	put_unaligned_le32(REG_READ_D(sc->sc_ah, AR_STA_ID0), addr);
+ 	put_unaligned_le16(REG_READ_D(sc->sc_ah, AR_STA_ID1) & 0xffff, addr + 4);
+ 	len += snprintf(buf + len, sizeof(buf) - len,
+@@ -439,6 +440,7 @@
+ 	len += snprintf(buf + len, sizeof(buf) - len,
+ 			"addrmask: %pM\n", addr);
+ 	tmp = ath9k_hw_getrxfilter(sc->sc_ah);
++	ath9k_ps_restore(sc);
+ 	len += snprintf(buf + len, sizeof(buf) - len,
+ 			"rfilt: 0x%x", tmp);
+ 	if (tmp & ATH9K_RX_FILTER_UCAST)
